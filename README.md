@@ -7,3 +7,9 @@ cd frontend
 npm install
 npm start
 ```
+
+# Steps to run backend
+```bash
+cd backend
+python manage.py runserver
+```
