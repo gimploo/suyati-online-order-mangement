@@ -1,6 +1,7 @@
-import { React, Fragment } from 'react'
+import { React, Fragment, useContext } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { SearchIcon, MenuIcon, ShoppingCartIcon, XIcon, UserIcon } from '@heroicons/react/outline'
+import { SearchIcon, MenuIcon, ShoppingCartIcon, XIcon, UserIcon, LoginIcon } from '@heroicons/react/outline'
+import UserContext from 'context/UserContext'
 
 import logo_big from 'assets/Suyati-logo-01.svg'
 
@@ -25,6 +26,9 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+
+  const is_user_logged_in = useContext(UserContext);
+
   return (
     <>
       <div class="min-h-full md:sticky shadow">
@@ -91,9 +95,10 @@ export default function Navbar() {
 
                       {/* Profile dropdown */}
                       <Menu as="div" class='w-13'>
-                        <div class='w-8 '>
-                          <Menu.Button class="bg-white p-1 rounded-full text-suyati-blue hover:text-white hover:bg-suyati-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" >
-                            <UserIcon class='w-full h-full'/>
+                        <div class='w-8'>
+                          <Menu.Button class="bg-white p-1 rounded-full text-suyati-yellow"  >
+                              {/* <UserIcon class='w-full h-full'/> */}
+                              <LoginIcon class='w-full h-full' />
                           </Menu.Button>
                         </div>
                         <Transition
