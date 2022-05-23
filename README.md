@@ -3,8 +3,8 @@ Suyati Team Project
 
 # Steps to run frontend
 ```bash
-cd frontend
-npm install
+cd backend/frontend
+npm run build
 npm start
 ```
 
