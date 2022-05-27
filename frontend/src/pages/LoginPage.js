@@ -35,11 +35,14 @@ export default function Login() {
                     <div class='my-4 '>
                         {/* <span class="text-sm ml-2  hover:text-blue-500 cursor-pointer">Forgot Password ?</span> */}
                             <button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Login</button>
-                        <div class='flex space-x-1'>
+                        <div class='flex space-x-1 text-sm p-2'>
                             <label class=''> Dont have an account? </label>
-                        <Link to='/signup'>
-                            <span class="text-sm p-1 font-bold text-suyati-yellow cursor-pointer">Signup</span>
-                        </Link>
+                            <Link to='/signup'>
+                                <span 
+                                class="text-sm p-1 font-bold text-suyati-yellow cursor-pointer">
+                                    Signup
+                                </span>
+                            </Link>
                         </div>
                     </div>
                 </form>

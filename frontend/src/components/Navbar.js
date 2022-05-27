@@ -3,9 +3,10 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { SearchIcon, MenuIcon, ShoppingCartIcon, XIcon, UserIcon, LoginIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
 import UserContext from 'context/UserContext'
-import TODO from 'utils/Deletethefileinproduction'
+import TODO from 'utils/basic'
 
 import logo_big from 'assets/Suyati-logo-01.svg'
+import Cart from 'components/CartPopup'
 
 const user = {
   name: 'Tom Cook',
@@ -84,12 +85,13 @@ function NavigationLinks() {
 
 function ShoppingCart() {
   return (
-  <button
-    type="button"
-    class="bg-white p-1 rounded-full text-suyati-blue hover:text-white hover:bg-suyati-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-  >
-    <ShoppingCartIcon class="h-6 w-6 hover:bg-suyati-blue hover:text-white" aria-hidden="true" />
-  </button>
+    <button
+      onClick={Cart}
+      type="button"
+      class="bg-white p-1 rounded-full text-suyati-blue hover:text-white hover:bg-suyati-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+    >
+      <ShoppingCartIcon class="h-6 w-6 hover:bg-suyati-blue hover:text-white" aria-hidden="true" />
+    </button>
 
   );
 }
