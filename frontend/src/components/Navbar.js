@@ -8,12 +8,6 @@ import TODO from 'utils/basic'
 import logo_big from 'assets/Suyati-logo-01.svg'
 import CartPopup from 'pages/CartPage'
 
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
 const navigation = [
   { name: 'More', href: '#', current: false },
   { name: 'Orders', href: '#', current: false },
@@ -99,12 +93,26 @@ function ShoppingCart() {
 }
 
 function Profile() {
+
+  const { isAuth } = useContext(UserContext)
+
+  if (isAuth) {
+    return (
+      <Link to='/user' >
+        <div class='w-8'>
+          <button class="bg-white p-1 rounded-full text-suyati-yellow"  >
+            <UserIcon class='w-full h-full'/> 
+          </button>
+        </div>
+      </Link>
+    )
+  }
+
   return (
     <Link to='/login' >
       <div class='w-8'>
         <button class="bg-white p-1 rounded-full text-suyati-yellow"  >
-            {/* <UserIcon class='w-full h-full'/> */}
-              <LoginIcon class='w-full h-full' />
+          <LoginIcon class='w-full h-full' />
         </button>
       </div>
     </Link>
@@ -112,6 +120,9 @@ function Profile() {
 }
 
 function MobileDropDownPanel() {
+
+  const {user, isAuth } = useContext(UserContext)
+
   return (
     <Disclosure.Panel class="md:hidden">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
@@ -132,8 +143,8 @@ function MobileDropDownPanel() {
 
 
       {/* USER STUFF SHOULD GO HERE */}
-        <Disclosure.Button
-          key={user.name}
+        {/* <Disclosure.Button
+          key={isAuthenticated ? user.username : "Login" }
           as="a"
           href=""
           class={classNames(
@@ -142,8 +153,8 @@ function MobileDropDownPanel() {
           )}
           aria-current=""
         >
-          {user.name}
-        </Disclosure.Button>
+          "lksadjf"
+        </Disclosure.Button> */}
 
       </div>
     </Disclosure.Panel>
@@ -202,7 +213,6 @@ export default function Navbar() {
           )}
         </Disclosure>
       </div>
-
     </>
   )
 }

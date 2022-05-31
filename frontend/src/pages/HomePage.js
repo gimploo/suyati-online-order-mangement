@@ -17,18 +17,18 @@ function CarouselOfPosters ({data}) {
     return (
         <div class="bg-black border-2 h-auto text-center w-full">
             <Carousel
-            data={data}
-            time={10000}
-            width="100%"
-            captionStyle={captionStyle}
-            radius="10px"
-            captionPosition="center"
-            automatic={true}
-            dots={true}
-            pauseIconColor="white"
-            pauseIconSize="40px"
-            slideBackgroundColor="darkgrey"
-            slideImageFit="cover"
+                data={data}
+                time={10000}
+                width="100%"
+                captionStyle={captionStyle}
+                radius="10px"
+                captionPosition="center"
+                automatic={true}
+                dots={true}
+                pauseIconColor="white"
+                pauseIconSize="40px"
+                slideBackgroundColor="darkgrey"
+                slideImageFit="cover"
             />
       </div>
     )

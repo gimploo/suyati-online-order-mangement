@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-const todaysDate = new Date().toISOString().split(",")[0];
+let today = new Date().toISOString().substr(0, 10);
 
 export default function Signup() {
+
+
     return (
         <div class="w-full bg-suyati-blue p-8 ">
-            <div class="flex md:w-80 md:mx-auto md:rounded-lg md:shadow-lg justify-center py-10 items-center bg-white">
+            <div class="flex md:w-80 md:mx-auto rounded-lg md:shadow-lg justify-center py-10 items-center bg-white">
                 <form class="bg-white">
                     <h1 class="text-gray-800 font-bold text-2xl mb-1">Welcome!</h1>
                     <p class="text-sm font-normal text-gray-600 mb-7">Please tell us a little about yourself</p>
@@ -27,14 +29,10 @@ export default function Signup() {
                     </div>
 
                     <div class="flex items-center justify-center">
-                        <div class="datepicker flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
-                            <input type="text"
-                            class="form-control block w-full pl-2 text-base font-normal text-gray-700 bg-white bg-clip-padding rounded border-none focus:ring-0 outline-none"
+                        <div class="w-full flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+                            <input value={today} type="date" 
+                            class="block form-control w-full pl-2 text-base font-normal text-gray-700 bg-white bg-clip-padding rounded border-none focus:ring-0 outline-none"
                             placeholder="Select a date" />
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-5 w-5 text-gray-400" viewBox="0 0 16 16">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                            </svg>
                         </div>
                     </div>
                     <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
@@ -52,7 +50,7 @@ export default function Signup() {
                                 d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                                 clip-rule="evenodd" />
                         </svg>
-                        <input class="pl-2 outline-none border-none" type="text" name="" id="" placeholder="Password" />
+                        <input class="pl-2 outline-none border-none" type="password" name="" id="" placeholder="Password" />
                     </div>
                     <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
@@ -61,11 +59,10 @@ export default function Signup() {
                                 d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                                 clip-rule="evenodd" />
                         </svg>
-                        <input class="pl-2 outline-none border-none" type="text" name="" id="" placeholder="Retype password" />
+                        <input class="pl-2 outline-none border-none" type="password" name="" id="" placeholder="Retype password" />
                     </div>
                     <div class='my-4 '>
-                        {/* <span class="text-sm ml-2  hover:text-blue-500 cursor-pointer">Forgot Password ?</span> */}
-                            <button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Signup</button>
+                        <button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Signup</button>
                         <div class='flex space-x-1 text-sm p-2'>
                             <label class=''> Already have an account? </label>
                             <Link to='/login'>
