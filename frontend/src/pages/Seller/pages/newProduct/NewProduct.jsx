@@ -2,8 +2,6 @@ import "./newProduct.css";
 
 export default function NewProduct() {
   return (
-   
-  
     <div className="newProduct">
       <h1 className="addProductTitle">New Product</h1>
       <form className="addProductForm">
@@ -29,6 +27,5 @@ export default function NewProduct() {
         <button className="addProductButton">Create</button>
       </form>
     </div>
-  
   );
 }

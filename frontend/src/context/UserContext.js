@@ -6,9 +6,11 @@ const UserContext = createContext({});
 
 export const UserProvider = ({children}) => {
 
-    const [user, setUser] = useState('');
-    const [isAuth, setAuth] = useState(false);
-    const navigate = useNavigate();
+    const [user, setUser]       = useState('');
+    const [isAuth, setAuth]     = useState(false);
+    const [isSeller, setSeller] = useState(false)
+    const [isBuyer, setBuyer]   = useState(false)
+    const navigate              = useNavigate();
 
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('logged_user')) || '')
@@ -32,7 +34,7 @@ export const UserProvider = ({children}) => {
 
     return (
         <UserContext.Provider value={{
-            user, isAuth, login, logout
+            user, isSeller, isBuyer, isAuth, login, logout
         }}>
             {children}
         </UserContext.Provider>

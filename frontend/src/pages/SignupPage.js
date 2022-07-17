@@ -61,6 +61,19 @@ export default function Signup() {
                         </svg>
                         <input class="pl-2 outline-none border-none" type="password" name="" id="" placeholder="Retype password" />
                     </div>
+                    <div class="flex justify-center space-x-2">
+                        <h1 class="text-md font-semibold text-gray-600 px-1">Select a role</h1>
+                        <select class='border-2 rounded-md text-gray-400 outline-none'>
+                        <option class="form-check form-check-inline">
+                            <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" id="inlineCheckbox1" value="option1"/>
+                            <label class="text-sm form-check-label inline-block text-gray-600" for="inlineCheckbox1">Buyer</label>
+                        </option>
+                        <option class="form-check form-check-inline">
+                            <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" id="inlineCheckbox2" value="option2"/>
+                            <label class="text-sm form-check-label inline-block text-gray-600" for="inlineCheckbox2">Seller</label>
+                        </option>
+                        </select>
+                    </div>
                     <div class='my-4 '>
                         <button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Signup</button>
                         <div class='flex space-x-1 text-sm p-2'>

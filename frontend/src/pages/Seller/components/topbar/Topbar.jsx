@@ -7,7 +7,7 @@ export default function Topbar() {
     <div className="topbar">
       <div className="topbarWrapper">
         <div className="topLeft">
-          <span className="logo">ASIET</span>
+          <span className="logo">lamaadmin</span>
         </div>
         <div className="topRight">
           <div className="topbarIconContainer">

@@ -14,21 +14,21 @@ import {
   Report,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import UserContext from "context/UserContext";
+import { useContext } from "react";
+
 
 export default function Sidebar() {
+
+  const {user, logout} = useContext(UserContext)
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
-            <Link to="/" className="link">
             <li className="sidebarListItem active">
-              <LineStyle className="sidebarIcon" />
-              Home
-            </li>
-            </Link>
-            <li className="sidebarListItem">
               <Timeline className="sidebarIcon" />
               Analytics
             </li>
@@ -41,13 +41,13 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quick Menu</h3>
           <ul className="sidebarList">
-            <Link to="/users" className="link">
+            <Link to="/seller/users" className="link">
               <li className="sidebarListItem">
                 <PermIdentity className="sidebarIcon" />
                 Users
               </li>
             </Link>
-            <Link to="/products" className="link">
+            <Link to="/seller/products" className="link">
               <li className="sidebarListItem">
                 <Storefront className="sidebarIcon" />
                 Products
@@ -97,6 +97,9 @@ export default function Sidebar() {
             </li>
           </ul>
         </div>
+
+        <button onClick={logout} class="w-24 rounded-lg shadow  m-auto bg-red-500 font-semibold hover:bg-red-600 py-3 text-sm text-white uppercase">Logout</button>
+
       </div>
     </div>
   );

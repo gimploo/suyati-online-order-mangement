@@ -52,7 +52,7 @@ const LogoutButton = ({logout}) => {
     )
 }
 
-export default function User() {
+export default function BuyerAbout() {
 
     const {user, logout} = useContext(UserContext)
 

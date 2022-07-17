@@ -68,7 +68,7 @@ export default function Cart() {
   let totalPrice = 0.00;
 
   return (
-    <div class="container mx-auto">
+    <div class="mx-auto md:mx-auto md:w-2/3">
     <div class="flex shadow-md ">
       <div class="w-full md:w-3/4 bg-white px-10 py-10">
         <div class="flex justify-between border-b pb-8">

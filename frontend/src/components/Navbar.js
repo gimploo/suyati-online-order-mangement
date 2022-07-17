@@ -6,7 +6,7 @@ import UserContext from 'context/UserContext'
 import TODO from 'utils/basic'
 
 import logo_big from 'assets/Suyati-logo-01.svg'
-import CartPopup from 'pages/CartPage'
+import CartPopup from 'pages/Buyer/CartPage'
 
 const navigation = [
   { name: 'More', href: '#', current: false },
@@ -80,7 +80,7 @@ function NavigationLinks() {
 function ShoppingCart() {
 
   return (
-    <Link to='/cart'>
+    <Link to='/buyer/cart'>
       <button
         type="button"
         class="bg-white p-1 rounded-full text-suyati-blue hover:text-white hover:bg-suyati-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
@@ -98,7 +98,7 @@ function Profile() {
 
   if (isAuth) {
     return (
-      <Link to='/user' >
+      <Link to='/seller/about' >
         <div class='w-8'>
           <button class="bg-white p-1 rounded-full text-suyati-yellow"  >
             <UserIcon class='w-full h-full'/> 
