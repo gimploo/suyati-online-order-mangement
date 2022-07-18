@@ -28,10 +28,12 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
-            <li className="sidebarListItem active">
-              <Timeline className="sidebarIcon" />
-              Analytics
-            </li>
+            <Link to='/seller/about' >
+              <li className="sidebarListItem active">
+                <Timeline className="sidebarIcon" />
+                Analytics
+              </li>
+            </Link>
             <li className="sidebarListItem">
               <TrendingUp className="sidebarIcon" />
               Sales

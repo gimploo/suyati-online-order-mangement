@@ -6,8 +6,10 @@ import {
   PhoneAndroid,
   Publish,
 } from "@material-ui/icons";
+import Sidebar from "pages/Seller/components/sidebar/Sidebar";
 import { Link } from "react-router-dom";
 import "./user.css";
+import './../home/home.css'
 
 export default function User() {
   return (
