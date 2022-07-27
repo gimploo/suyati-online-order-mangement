@@ -29,7 +29,10 @@ export default function Sidebar() {
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
             <Link to='/seller/about' >
-              <li className="sidebarListItem active">
+
+              {/* removed active here */}
+              <li className="sidebarListItem ">
+
                 <Timeline className="sidebarIcon" />
                 Analytics
               </li>
