@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import UserContext from 'context/UserContext'
 import TODO from 'utils/basic'
 
-import logo_big from 'assets/Suyati-logo-01.svg'
+import logo_big from 'assets/asiet.png'
 import CartPopup from 'pages/Buyer/CartPage'
 
 const navigation = [
@@ -24,11 +24,11 @@ function classNames(...classes) {
 
 function Logo() {
   return (
-    <div class="flex items-center mr-4">
+    <div class="flex items-center w-1/4">
       <div class="flex-shrink-0">
         <Link to='/' >
           <img
-            class="h-8 w-18"
+            class="h-8 w-40"
             src={logo_big}
             alt="Suyati-Logo"
           />
