@@ -6,4 +6,9 @@ from rest_framework.settings import api_settings
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = userdata
-        fields = ('password','id')
+        fields = ('password','id','added_date')
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = productdata
+        fields = ('pid','pname','price','added_date','edited_date')
