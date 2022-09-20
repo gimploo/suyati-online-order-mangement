@@ -1,3 +1,4 @@
+from enum import Enum
 from . models import *
 from .serializers import *
 from django.http import HttpResponseRedirect,HttpResponse
@@ -9,8 +10,32 @@ from django.core.files.storage import FileSystemStorage
 from rest_framework.generics import ListAPIView
 import bcrypt
 from datetime import date
+from django.db import models
+from django.core import serializers
 
 fs=FileSystemStorage(location='tmp/')
+"""
+(gokul): the reason i am doing this is to do proper checks at the frontend so to definitely
+know what kind of data its getting
+"""
+class ApiResponseMessageType(Enum):
+    CORRECT_EMAIL_AND_PASSWORD  = 1
+    WRONG_EMAIL_AND_PASSWORD    = 2
+    WRONG_PASSWORD              = 3
+    INPUT_FIELD_EMAIL_EMPTY     = 4
+    INPUT_FIELD_PASSWORD_EMPTY  = 5
+    UNKNOWN_MESSAGE_TYPE        = 6
+
+    def to_string(self):
+        return f'{self.name}'
+
+def api_response(messagetype : ApiResponseMessageType, data : models.Model = None) -> Response:
+    return Response(
+        {
+            'message'   : messagetype.to_string(),
+            'data'      : serializers.serialize('python', [data] ) if data is not None else {} 
+        }
+    )
 
 @api_view(['POST'])
 def login(request):
@@ -18,17 +43,17 @@ def login(request):
     email       = data['email']
     password    = data['password']
     if email == "":
-        return Response('Email cannot be empty')
+        return api_response(ApiResponseMessageType.INPUT_FIELD_EMAIL_EMPTY)
     elif password == "":
-        return Response('Password cannot be empty')
+        return api_response(ApiResponseMessageType.INPUT_FIELD_PASSWORD_EMPTY)
 
     for user in User.objects.all():
         if email == user.email:
             if password == user.password:
-                return Response('login successfull')
+                return api_response(ApiResponseMessageType.CORRECT_EMAIL_AND_PASSWORD, user)
             else:
-                return Response('password is incorrect')
-    return Response('Incorrect email or password')
+                return api_response(ApiResponseMessageType.WRONG_PASSWORD)
+    return api_response(ApiResponseMessageType.WRONG_EMAIL_AND_PASSWORD)
 
 @api_view(['POST'])
 def signup(request):

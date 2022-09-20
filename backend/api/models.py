@@ -7,7 +7,6 @@ class User(models.Model):
     """
     can add more fields, these are just the boilerplate
     """
-
     USER_TYPES = (
         (1, 'Buyer'),
         (2, 'Seller'),
