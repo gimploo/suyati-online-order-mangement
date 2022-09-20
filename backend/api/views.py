@@ -14,21 +14,21 @@ fs=FileSystemStorage(location='tmp/')
 
 @api_view(['POST'])
 def login(request):
-    data=request.data
-    id = data['id']
-    password = data['password']
-    if id == "":
-        return Response('username cannot be empty')
+    data        = request.data
+    email       = data['email']
+    password    = data['password']
+    if email == "":
+        return Response('Email cannot be empty')
     elif password == "":
-        return Response('please supply a password')
-    user_data=userdata.objects.all()
-    for user in user_data:
-        if id == user.id:
-            passwd =  password.encode()
-            if bcrypt.checkpw(passwd,user.password):
+        return Response('Password cannot be empty')
+
+    for user in User.objects.all():
+        if email == user.email:
+            if password == user.password:
                 return Response('login successfull')
-            break
-    return Response('username or password incorrect')
+            else:
+                return Response('password is incorrect')
+    return Response('Incorrect email or password')
 
 @api_view(['POST'])
 def signup(request):
@@ -42,11 +42,11 @@ def signup(request):
         return Response('check the passwords')
     elif repass == "" or password == "":
         return Response('password cant be null')
-    user_data=userdata.objects.all()
+    user_data=User.objects.all()
     for user in user_data:
         if id == user.id:
             return Response("username already taken")
-    datas=userdata.objects.create(
+    datas=User.objects.create(
         id=id,
         password=bcrypt.hashpw(password.encode(),bcrypt.gensalt())
     )
@@ -57,7 +57,7 @@ def signup(request):
 def delete_user(request):
     data=request.data
     id=data['id']
-    user_data=userdata.objects.all()
+    user_data=User.objects.all()
     for user in user_data:
         if id == user.id:
             user.delete()
