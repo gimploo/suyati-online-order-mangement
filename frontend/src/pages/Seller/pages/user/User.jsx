@@ -13,7 +13,7 @@ import './../home/home.css'
 
 export default function User() {
   return (
-    <div className="user">
+    <div className="user md:m-auto md:w-1/2">
       <div className="userTitleContainer">
         <h1 className="userTitle">Edit User</h1>
         <Link to="/seller/newUser">

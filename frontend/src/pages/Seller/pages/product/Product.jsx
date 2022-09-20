@@ -3,10 +3,11 @@ import "./product.css";
 import Chart from "../../components/chart/Chart"
 import {productData} from "../../dummyData"
 import { Publish } from "@material-ui/icons";
+import Sidebar from "pages/Seller/components/sidebar/Sidebar";
 
 export default function Product() {
   return (
-    <div className="product">
+    <div className="product md:m-auto md:w-2/3">
       <div className="productTitleContainer">
         <h1 className="productTitle">Product</h1>
         <Link to="/seller/newproduct">

@@ -2,7 +2,7 @@ import "./newProduct.css";
 
 export default function NewProduct() {
   return (
-    <div className="newProduct">
+    <div className="newProduct border-2 p-8 m-auto w-1/2 ">
       <h1 className="addProductTitle">New Product</h1>
       <form className="addProductForm">
         <div className="addProductItem">
