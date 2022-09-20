@@ -40,7 +40,6 @@ const grab_user_id = (res) => {
 const grab_user_data = (res) => {
     return res.data.data[0].fields
 }
-// from mdn web
 
 const COOKIE_USER_ID = 'suyati-user-id';
 const COOKIE_USER_INFO = 'suyati-user-info';
