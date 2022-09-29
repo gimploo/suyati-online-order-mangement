@@ -2,7 +2,7 @@ import { React, Fragment, useContext, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { SearchIcon, MenuIcon, ShoppingCartIcon, XIcon, UserIcon, LoginIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
-import UserContext from 'context/UserContext'
+import UserContext from 'context/BackendContext'
 import TODO from 'utils/basic'
 
 import logo_big from 'assets/asiet.png'
@@ -43,7 +43,7 @@ function SearchBar() {
     <div class='mx-8 w-full'>
       <div class="py-2 relative text-gray-600">
         <input class="border-2 border-gray-300 bg-white h-10 w-full px-5 pr-16 rounded-lg text-sm focus:outline-none"
-          type="search" name="search" placeholder="Search"/>
+          type="search" name="search" placeholder="Search" />
         <button type="submit" class="absolute right-0 top-0 mt-4 mr-3">
           <SearchIcon class='h-6  w-6 ' aria-hidden="true" />
         </button>
@@ -54,25 +54,25 @@ function SearchBar() {
 
 function NavigationLinks() {
   return (
-  <div class="hidden md:block">
-    <div class="text-left h-auto flex flex-1 items-baseline space-x-4">
-      {navigation.map((item) => (
-        <Link
-          key={item.name}
-          to={item.href}
-          class={classNames(
-            item.current
-              ? 'bg-suyati-blue text-white'
-              : 'text-suyati-gray hover:bg-suyati-blue hover:text-white',
-            'px-3 py-2 text-left rounded-md text-sm font-medium my-auto'
-          )}
-          aria-current={item.current ? 'page' : undefined}
-        >
-          {item.name}
-        </Link>
-      ))}
+    <div class="hidden md:block">
+      <div class="text-left h-auto flex flex-1 items-baseline space-x-4">
+        {navigation.map((item) => (
+          <Link
+            key={item.name}
+            to={item.href}
+            class={classNames(
+              item.current
+                ? 'bg-suyati-blue text-white'
+                : 'text-suyati-gray hover:bg-suyati-blue hover:text-white',
+              'px-3 py-2 text-left rounded-md text-sm font-medium my-auto'
+            )}
+            aria-current={item.current ? 'page' : undefined}
+          >
+            {item.name}
+          </Link>
+        ))}
+      </div>
     </div>
-  </div>
 
   )
 }
@@ -101,7 +101,7 @@ function Profile() {
       <Link to='/seller/about' >
         <div class='w-8'>
           <button class="bg-white p-1 rounded-full text-suyati-yellow"  >
-            <UserIcon class='w-full h-full'/> 
+            <UserIcon class='w-full h-full' />
           </button>
         </div>
       </Link>
@@ -121,7 +121,7 @@ function Profile() {
 
 function MobileDropDownPanel() {
 
-  const {user, isAuth } = useContext(UserContext)
+  const { user, isAuth } = useContext(UserContext)
 
   return (
     <Disclosure.Panel class="md:hidden">
@@ -142,7 +142,7 @@ function MobileDropDownPanel() {
         ))}
 
 
-      {/* USER STUFF SHOULD GO HERE */}
+        {/* USER STUFF SHOULD GO HERE */}
         {/* <Disclosure.Button
           key={isAuthenticated ? user.username : "Login" }
           as="a"
@@ -161,7 +161,7 @@ function MobileDropDownPanel() {
   )
 }
 
-function MobileDropDownButton({isOpen}) {
+function MobileDropDownButton({ isOpen }) {
   return (
     <div class="mr-2 flex md:hidden">
       {/* Mobile menu button */}
@@ -202,7 +202,7 @@ export default function Navbar() {
                     </div>
                   </div>
 
-                  <MobileDropDownButton isOpen={open}/>
+                  <MobileDropDownButton isOpen={open} />
 
                 </div>
               </div>

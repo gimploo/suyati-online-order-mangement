@@ -1,19 +1,11 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom'
 import bgImage from 'assets/login-page-left.jpg'
-import UserContext from 'context/UserContext';
+import BackendContext from 'context/BackendContext';
 
 export default function Login() {
 
-    const { login }  = useContext(UserContext)
-
-    const dummyvalue = {
-        username:   "Foobar",
-        fullname:   "Foobar fullname",
-        dob:        "22/02/2000",
-        email:      "foobar@gmail.com",
-        password:   "12345678"
-    }
+    const { login } = useContext(BackendContext)
 
     return (
         <div class="w-full bg-suyati-blue p-8 ">
@@ -40,12 +32,12 @@ export default function Login() {
                     </div>
                     <div class='my-4 '>
                         {/* <span class="text-sm ml-2  hover:text-blue-500 cursor-pointer">Forgot Password ?</span> */}
-                            <button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Login</button>
+                        <button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Login</button>
                         <div class='flex space-x-1 text-sm p-2'>
                             <label class=''> Dont have an account? </label>
                             <Link to='/signup'>
-                                <span 
-                                class="text-sm p-1 font-bold text-suyati-yellow cursor-pointer">
+                                <span
+                                    class="text-sm p-1 font-bold text-suyati-yellow cursor-pointer">
                                     Signup
                                 </span>
                             </Link>

@@ -14,13 +14,13 @@ import {
   Report,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import UserContext from "context/UserContext";
+import UserContext from "context/BackendContext";
 import { useContext } from "react";
 
 
 export default function Sidebar() {
 
-  const {user, logout} = useContext(UserContext)
+  const { user, logout } = useContext(UserContext)
 
   return (
     <div className="sidebar">
@@ -56,6 +56,12 @@ export default function Sidebar() {
               <li className="sidebarListItem">
                 <Storefront className="sidebarIcon" />
                 Products
+              </li>
+            </Link>
+            <Link to="/seller/product/add" className="link">
+              <li className="sidebarListItem">
+                <Storefront className="sidebarIcon" />
+                Add product
               </li>
             </Link>
             <li className="sidebarListItem">
