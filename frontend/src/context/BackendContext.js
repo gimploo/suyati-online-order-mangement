@@ -9,6 +9,7 @@ import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 const BackendContext = createContext({});
 const API_SERVER_URL = 'http://127.0.0.1:8000/api'
 const DEFAULT_USER_INFO = {
+    id: '',
     fullname: '',
     username: '',
     dob: '',
@@ -67,7 +68,7 @@ export const BackendProvider = ({ children }) => {
             const userInfo = localStorage.getItem(COOKIE_USER_INFO)
             if (userInfo) {
                 const userArray = JSON.parse(userInfo)
-                setUser(userArray)
+                setUser({ id: JSON.parse(id), ...userArray })
                 if (userArray.role == 1) {
                     setBuyer(true)
                 } else if (userArray.role == 2) {
@@ -113,7 +114,7 @@ export const BackendProvider = ({ children }) => {
                                 break;
                         }
                         setAuth(true);
-                        setUser(userdata)
+                        setUser({ id: userid, ...userdata })
                         localStorage.setItem(COOKIE_USER_ID, JSON.stringify(userid))
                         localStorage.setItem(COOKIE_USER_INFO, JSON.stringify(userdata))
                         navigate('/')
@@ -171,7 +172,7 @@ export const BackendProvider = ({ children }) => {
                                 break;
                         }
                         setAuth(true);
-                        setUser(userdata)
+                        setUser({ id: userid, ...userdata })
                         localStorage.setItem(COOKIE_USER_ID, JSON.stringify(userid))
                         localStorage.setItem(COOKIE_USER_INFO, JSON.stringify(userdata))
                         navigate('/')
@@ -222,6 +223,10 @@ export const BackendProvider = ({ children }) => {
 
     return (
         <BackendContext.Provider value={{
+            // utils
+            API_SERVER_URL,
+            COOKIE_USER_ID,
+            COOKIE_USER_INFO,
 
             // Backend
             user, isSeller, isBuyer, isAuth,

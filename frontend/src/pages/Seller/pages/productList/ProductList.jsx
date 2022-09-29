@@ -1,13 +1,51 @@
 import "./productList.css";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid, gridColumnsTotalWidthSelector } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { productRows } from "../../dummyData";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import Sidebar from "pages/Seller/components/sidebar/Sidebar";
+import axios from 'axios'
+import BackendContext from "context/BackendContext";
 
 export default function SellerProductList() {
-  const [data, setData] = useState(productRows);
+
+  const { API_SERVER_URL, COOKIE_USER_INFO } = useContext(BackendContext)
+  const [products, setProducts] = useState([])
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const user = localStorage.getItem(COOKIE_USER_INFO)
+    const data = JSON.parse(user)
+    console.log(data)
+
+    let tmp = []
+    axios.post(`${API_SERVER_URL}/user/product/all/`, { username: data.username })
+      .then((res) => {
+        if (res.status == 200) {
+          setProducts(res.data)
+
+          // convert product to data format accecpted by this template
+          const stuff = res.data.data;
+          for (let i = 0; i < stuff.length; i++) {
+            const product = stuff[i]
+            tmp.push({
+              id: i,
+              name: product.name,
+              img: product.image,
+              stock: product.quantity,
+              status: product.status == 1 ? "active" : "inactive",
+              price: product.price,
+            })
+          }
+          setData(tmp)
+        }
+      })
+
+
+
+  }, [])
+
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));

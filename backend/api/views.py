@@ -1,4 +1,7 @@
 from enum import Enum
+
+from itsdangerous import Serializer
+
 from . models import *
 from .serializers import *
 from django.http import HttpResponseRedirect, HttpResponse
@@ -36,15 +39,25 @@ class ApiResponseMessageType(Enum):
     PRODUCT_FOUND = 11
     NO_PRODUCT_FOUND = 12
     PRODUCT_AVAILABLE_CATEGORIES = 13
+    ALL_PRODUCTS_FROM_USER = 14
 
     def to_string(self):
         return f'{self.name}'
 
 
-def api_response(messagetype: ApiResponseMessageType, data: models.Model = None) -> Response:
+def api_model_response(messagetype: ApiResponseMessageType, data: models.Model = None) -> Response:
     response = {
         'message': messagetype.to_string(),
         'data': serializers.serialize('python', [data]) if data is not None else {}
+    }
+    print(response)
+    return Response(response)
+
+
+def api_data_response(messagetype: ApiResponseMessageType, serialized_data) -> Response:
+    response = {
+        'message': messagetype.to_string(),
+        'data': serialized_data
     }
     print(response)
     return Response(response)
@@ -56,17 +69,17 @@ def login(request):
     email = data['email']
     password = data['password']
     if email == "":
-        return api_response(ApiResponseMessageType.INPUT_FIELD_EMAIL_EMPTY)
+        return api_model_response(ApiResponseMessageType.INPUT_FIELD_EMAIL_EMPTY)
     elif password == "":
-        return api_response(ApiResponseMessageType.INPUT_FIELD_PASSWORD_EMPTY)
+        return api_model_response(ApiResponseMessageType.INPUT_FIELD_PASSWORD_EMPTY)
 
     for user in User.objects.all():
         if email == user.email:
             if password == user.password:
-                return api_response(ApiResponseMessageType.CORRECT_EMAIL_AND_PASSWORD, user)
+                return api_model_response(ApiResponseMessageType.CORRECT_EMAIL_AND_PASSWORD, user)
             else:
-                return api_response(ApiResponseMessageType.WRONG_PASSWORD)
-    return api_response(ApiResponseMessageType.WRONG_EMAIL_AND_PASSWORD)
+                return api_model_response(ApiResponseMessageType.WRONG_PASSWORD)
+    return api_model_response(ApiResponseMessageType.WRONG_EMAIL_AND_PASSWORD)
 
 
 def get_role_id(type_name):
@@ -93,9 +106,9 @@ def signup(request):
     user_data = User.objects.all()
     for user in user_data:
         if username == user.username:
-            return api_response(ApiResponseMessageType.USERNAME_ALREADY_TAKEN)
+            return api_model_response(ApiResponseMessageType.USERNAME_ALREADY_TAKEN)
         if email == user.email:
-            return api_response(ApiResponseMessageType.EMAIL_ALREADY_TAKEN)
+            return api_model_response(ApiResponseMessageType.EMAIL_ALREADY_TAKEN)
 
     user = User.objects.create(
         fullname=fullname,
@@ -105,7 +118,7 @@ def signup(request):
         password=password,
         role=role,
     )
-    return api_response(ApiResponseMessageType.SIGNUP_SUCCESSFULL, user)
+    return api_model_response(ApiResponseMessageType.SIGNUP_SUCCESSFULL, user)
 
 
 @api_view(['POST'])
@@ -124,9 +137,9 @@ def delete_user(request):
 def get_product(request, pid):
     product_data = Product.objects.get(id=pid)
     if (product_data is None):
-        return api_response(ApiResponseMessageType.NO_PRODUCT_FOUND)
+        return api_model_response(ApiResponseMessageType.NO_PRODUCT_FOUND)
 
-    return api_response(ApiResponseMessageType.PRODUCT_FOUND, product_data)
+    return api_model_response(ApiResponseMessageType.PRODUCT_FOUND, product_data)
 
 
 @api_view(['POST'])
@@ -155,7 +168,7 @@ def add_product(request):
 
     user = User.objects.get(username=username)
     if (user is None):
-        return api_response(ApiResponseMessageType.USER_INVALID)
+        return api_model_response(ApiResponseMessageType.USER_INVALID)
 
     datas = Product.objects.create(
         userid=user,
@@ -183,7 +196,7 @@ def edit_product(request, pid):
 
     product = Product.objects.get(id=pid)
     if (product is None):
-        return api_response(ApiResponseMessageType.NO_PRODUCT_FOUND)
+        return api_model_response(ApiResponseMessageType.NO_PRODUCT_FOUND)
     product.name = pname
     product.price = price
     product.quantity = quantity
@@ -197,7 +210,7 @@ def edit_product(request, pid):
 def delete_product(request, pid):
     product = Product.objects.get(id=id)
     if (product is None):
-        return api_response(ApiResponseMessageType.NO_PRODUCT_FOUND)
+        return api_model_response(ApiResponseMessageType.NO_PRODUCT_FOUND)
     product.delete()
     return Response(f'product {pid} deleted successfully')
 
@@ -207,3 +220,15 @@ def get_available_categories(request):
     return Response(
         Product.get_categories()
     )
+
+
+@api_view(['POST'])
+def get_all_products_from_a_user(request):
+    username = request.data['username']
+    user = User.objects.get(username=username)
+    if (user is None):
+        return api_model_response(ApiResponseMessageType.USER_INVALID)
+
+    products = Product.objects.all().filter(userid=user)
+    serializer = ProductSerializer(products, many=True)
+    return api_data_response(ApiResponseMessageType.ALL_PRODUCTS_FROM_USER, serializer.data)
