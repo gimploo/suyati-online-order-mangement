@@ -24,7 +24,6 @@ export default function SellerProductList() {
       .then((res) => {
         if (res.status == 200) {
           setProducts(res.data)
-
           // convert product to data format accecpted by this template
           const stuff = res.data.data;
           for (let i = 0; i < stuff.length; i++) {
