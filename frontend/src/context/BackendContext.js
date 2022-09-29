@@ -5,6 +5,7 @@ import { AlternateEmail } from '@material-ui/icons';
 import axios from 'axios'
 import { ContentPasteSearchOutlined } from '@mui/icons-material';
 import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
+import PopUp from 'components/Popup';
 
 const BackendContext = createContext({});
 const API_SERVER_URL = 'http://127.0.0.1:8000/api'
@@ -48,6 +49,11 @@ const COOKIE_USER_ID = 'suyati-user-id';
 const COOKIE_USER_INFO = 'suyati-user-info';
 
 export const BackendProvider = ({ children }) => {
+
+    //Popup
+    const [openPopUp, setOpenPopUp] = useState(false)
+    const [titlePopUp, setTitlePopUp] = useState('')
+    const [descPopUp, setDescPopUp] = useState('')
 
     //Backend
     const [user, setUser] = useState(DEFAULT_USER_INFO);
@@ -121,6 +127,7 @@ export const BackendProvider = ({ children }) => {
                         break;
                     case "WRONG_EMAIL_AND_PASSWORD":
                         console.log("Invalid username and password")
+                        alert(message)
                         break;
                 }
             })
@@ -217,8 +224,21 @@ export const BackendProvider = ({ children }) => {
             .then((res) => {
                 if (res.status == 200) {
                     console.log(res.data)
+                    const message = res.data.message
+                    switch (message) {
+                        case "PRODUCT_ADDED_SUCCESSFULLY":
+                            // showPopup(res.data, "")
+                            alert(message)
+                            break;
+                    }
                 }
             })
+    }
+
+    const showPopup = async (title, description) => {
+        setTitlePopUp(title)
+        setDescPopUp(description)
+        setOpenPopUp(true)
     }
 
     return (
@@ -227,6 +247,7 @@ export const BackendProvider = ({ children }) => {
             API_SERVER_URL,
             COOKIE_USER_ID,
             COOKIE_USER_INFO,
+            showPopup, titlePopUp, descPopUp, setOpenPopUp,
 
             // Backend
             user, isSeller, isBuyer, isAuth,

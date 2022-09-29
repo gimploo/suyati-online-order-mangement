@@ -40,6 +40,7 @@ class ApiResponseMessageType(Enum):
     NO_PRODUCT_FOUND = 12
     PRODUCT_AVAILABLE_CATEGORIES = 13
     ALL_PRODUCTS_FROM_USER = 14
+    PRODUCT_ADDED_SUCCESSFULLY = 20
 
     def to_string(self):
         return f'{self.name}'
@@ -54,7 +55,7 @@ def api_model_response(messagetype: ApiResponseMessageType, data: models.Model =
     return Response(response)
 
 
-def api_data_response(messagetype: ApiResponseMessageType, serialized_data) -> Response:
+def api_data_response(messagetype: ApiResponseMessageType, serialized_data=None) -> Response:
     response = {
         'message': messagetype.to_string(),
         'data': serialized_data
@@ -179,7 +180,7 @@ def add_product(request):
         status=status,
         image=image
     )
-    return Response('PRODUCT_ADDED_SUCCESSFULLY')
+    return api_data_response(ApiResponseMessageType.PRODUCT_ADDED_SUCCESSFULLY)
 
 
 @api_view(['GET'])
@@ -232,3 +233,7 @@ def get_all_products_from_a_user(request):
     products = Product.objects.all().filter(userid=user)
     serializer = ProductSerializer(products, many=True)
     return api_data_response(ApiResponseMessageType.ALL_PRODUCTS_FROM_USER, serializer.data)
+
+
+@api_view(['POST'])
+def seasonal_demand(request):

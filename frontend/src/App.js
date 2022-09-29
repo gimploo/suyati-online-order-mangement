@@ -20,6 +20,7 @@ import UserRoute from 'utils/UserRoute.js';
 import ProductPage from 'pages/ProductPage'
 import NewProduct from 'pages/Seller/pages/newProduct/NewProduct'
 import { BackendProvider } from 'context/BackendContext'
+import PopUp from 'components/Popup'
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
 					<Route path="/seller/product/add" element={<NewProduct />} />
 				</Routes>
 				<Footer />
+				<PopUp />
 			</BackendProvider>
 		</>
 	);

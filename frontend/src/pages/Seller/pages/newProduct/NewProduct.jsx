@@ -1,6 +1,7 @@
 import { gridColumnsTotalWidthSelector } from "@material-ui/data-grid";
 import BackendContext from "context/BackendContext";
 import { useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
 import "./newProduct.css";
 
 export default function NewProduct() {
