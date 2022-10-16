@@ -66,3 +66,16 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CategoryStockHistory(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date = models.DateField(unique=True)
+
+    # add more categories under here
+    clothing = models.IntegerField()
+    furniture = models.IntegerField()
+    electronic = models.IntegerField()
+
+    def __str__(self):
+        return str(self.date)

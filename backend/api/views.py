@@ -237,3 +237,4 @@ def get_all_products_from_a_user(request):
 
 @api_view(['POST'])
 def seasonal_demand(request):
+    pass
