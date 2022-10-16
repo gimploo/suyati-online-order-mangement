@@ -246,3 +246,8 @@ def get_all_products_from_a_user(request):
 def get_stock_recommendation(request):
     category = request.data['category']
     return Response(json.dumps(ml_sd.predict_today(category)))
+
+
+@api_view(['POST'])
+def get_stock_recommendation_for_entire_year(request):
+    return Response(json.dumps(ml_sd.predict_an_entire_year()))

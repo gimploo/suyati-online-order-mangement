@@ -21,4 +21,6 @@ urlpatterns = [
     # ml
     path('api/product/category/stock/recommendation', views.get_stock_recommendation,
          name='get_stock_recommendation'),
+    path('api/product/category/stock/recommendation/allyear', views.get_stock_recommendation_for_entire_year,
+         name='get_stock_recommendation_for_entire_year'),
 ]

@@ -1,6 +1,7 @@
 import joblib
 import pandas as pd
 from datetime import datetime
+import calendar
 
 RESEARCH_PATH = 'ml/research/'
 
@@ -41,3 +42,31 @@ class SeasonalDemandClassifier:
             "max": round(row['yhat_upper'].values[0]),
             "avg": round(row['yhat'].values[0])
         }
+
+    def predict_an_entire_year(self):
+        clothing = self.predict("clothing")
+        furniture = self.predict("furniture")
+        electronic = self.predict("electronic")
+
+        year = datetime.now().year
+        crows = clothing.loc[(clothing['ds'].dt.year ==
+                             year) & (clothing['ds'].dt.month == 1)]
+        frows = furniture.loc[(furniture['ds'].dt.year ==
+                              year) & (furniture['ds'].dt.month == 1)]
+        erows = electronic.loc[(electronic['ds'].dt.year ==
+                                year) & (electronic['ds'].dt.month == 1)]
+
+        clist = crows.values.tolist()
+        elist = erows.values.tolist()
+        flist = frows.values.tolist()
+
+        output = list()
+        for i in range(12):
+            output.append({
+                "name": calendar.month_name[i+1][0:3],
+                "Clothing": round(clist[i][1]),
+                "Furniture": round(flist[i][1]),
+                "Electronic": round(elist[i][1]),
+            })
+
+        return output
