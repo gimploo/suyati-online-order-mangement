@@ -18,4 +18,7 @@ urlpatterns = [
     path('api/product/category/all/', views.get_available_categories,
          name='get_available_categories'),
 
+    # ml
+    path('api/product/category/stock/recommendation', views.get_stock_recommendation,
+         name='get_stock_recommendation'),
 ]

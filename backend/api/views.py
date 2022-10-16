@@ -1,6 +1,10 @@
-from enum import Enum
+import pandas as pd
 
+from enum import Enum
+import json
 from itsdangerous import Serializer
+
+from ml.models import SeasonalDemandClassifier
 
 from . models import *
 from .serializers import *
@@ -21,6 +25,9 @@ fs = FileSystemStorage(location='tmp/')
 (gokul): the reason i am doing this is to do proper checks at the frontend so to definitely
 know what kind of data its getting
 """
+
+# sesonal demand model
+ml_sd = SeasonalDemandClassifier()
 
 
 class ApiResponseMessageType(Enum):
@@ -236,5 +243,6 @@ def get_all_products_from_a_user(request):
 
 
 @api_view(['POST'])
-def seasonal_demand(request):
-    pass
+def get_stock_recommendation(request):
+    category = request.data['category']
+    return Response(json.dumps(ml_sd.predict_today(category)))

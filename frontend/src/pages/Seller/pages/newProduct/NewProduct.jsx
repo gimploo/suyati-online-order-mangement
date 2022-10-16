@@ -1,14 +1,41 @@
 import { gridColumnsTotalWidthSelector } from "@material-ui/data-grid";
+import axios from "axios";
 import BackendContext from "context/BackendContext";
+import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import "./newProduct.css";
 
 export default function NewProduct() {
 
-  const { user, add_product, categories } = useContext(BackendContext)
+  const { API_SERVER_URL, add_product, categories } = useContext(BackendContext)
 
   const [imageContent, setImageContent] = useState(null)
+  const [sdStock, setSdStock] = useState(null)
+  const [userSelectedStock, setUserSelectedStock] = useState(0)
+
+
+  const ml_SeasonalDemand = async (category) => {
+    await axios.post(`${API_SERVER_URL}/product/category/stock/recommendation`, { category: category })
+      .then((res) => {
+        if (res.status == 200) {
+          const data = JSON.parse(res.data)
+          setSdStock(data)
+          setUserSelectedStock(data.avg)
+        }
+      })
+  }
+
+  const stockOnChange = async (e) => {
+    e.preventDefault()
+    const category = categories[e.target.value - 1][1]
+    await ml_SeasonalDemand(category)
+  }
+
+  const sliderOnChange = async (e) => {
+    e.preventDefault()
+    setUserSelectedStock(e.target.value)
+  }
 
   const createProduct = (e) => {
 
@@ -20,6 +47,10 @@ export default function NewProduct() {
     const status = e.target.status.value;
     add_product(name, price, category, quantity, status, imageContent);
   }
+
+  useEffect(() => {
+    ml_SeasonalDemand("electronic")
+  }, [categories])
 
   return (
     <div className="newProduct border-2 p-8 m-auto w-1/2 ">
@@ -34,13 +65,24 @@ export default function NewProduct() {
           <label>Name</label>
           <input name='name' type="text" placeholder="Product name" />
         </div>
-        <div className="addProductItem">
-          <label>Stock</label>
-          <input name='quantity' type="number" placeholder="01" />
+        <div class='flex'>
+          <div className="addProductItem">
+            <label>Stock</label>
+            <h1 class='m-2 text-lg font-semibold text-gray-600 p-2 text-center'>{userSelectedStock}</h1>
+          </div>
+          <div className="addProductItem bg-yellow-300 p-2 rounded-md">
+            <label >Recommended (seasonal demand)</label>
+            <div class='flex space-x-4'>
+              <label >{sdStock?.min}</label>
+              <input name='quantity' class='font-semibold' onChange={sliderOnChange} type="range" min={sdStock?.min} max={sdStock?.max} value={userSelectedStock} />
+              <label>{sdStock?.max}</label>
+            </div>
+          </div>
+
         </div>
         <div className="addProductItem">
           <label>Category</label>
-          <select name='category'>
+          <select onChange={stockOnChange} name='category'>
             {
               categories.map((category, index) => (
                 <option value={`${index + 1}`}> {category[1]}</option>
