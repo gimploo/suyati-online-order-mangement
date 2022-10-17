@@ -1,6 +1,6 @@
 from enum import Enum
 
-from itsdangerous import Serializer
+#from itsdangerous import Serializer
 
 from . models import *
 from .serializers import *
@@ -35,11 +35,19 @@ class ApiResponseMessageType(Enum):
     SIGNUP_SUCCESSFULL = 9
 
     USER_INVALID = 10
+    USER_DELETED = 11
 
-    PRODUCT_FOUND = 11
-    NO_PRODUCT_FOUND = 12
-    PRODUCT_AVAILABLE_CATEGORIES = 13
-    ALL_PRODUCTS_FROM_USER = 14
+    PRODUCT_FOUND = 12
+    NO_PRODUCT_FOUND = 13
+    PRODUCT_AVAILABLE_CATEGORIES = 14
+    ALL_PRODUCTS_FROM_USER = 15
+
+    PRODUCT_PRICE_IS_ZERO_OR_LESS = 16
+    PRODUCT_NAME_IS_EMPTY = 17
+    PRODUCT_QUANTITY_IS_ZERO = 18
+    PRODUCT_ALREADY_EXIST = 19
+    PRODUCT_ADDED_SUCCESSFULLY = 20
+    PRODUCT_PRICE_INVALID = 21
 
     def to_string(self):
         return f'{self.name}'
@@ -54,7 +62,7 @@ def api_model_response(messagetype: ApiResponseMessageType, data: models.Model =
     return Response(response)
 
 
-def api_data_response(messagetype: ApiResponseMessageType, serialized_data) -> Response:
+def api_data_response(messagetype: ApiResponseMessageType, serialized_data = None) -> Response:
     response = {
         'message': messagetype.to_string(),
         'data': serialized_data
@@ -129,16 +137,18 @@ def delete_user(request):
     for user in user_data:
         if id == user.id:
             user.delete()
-            return Response(f'{id} deleted successfully')
-    return Response('username not found')
+            return api_model_response(ApiResponseMessageType.USER_DELETED, user.id)
+            #return Response(f'{id} deleted successfully')
+    return api_model_response(ApiResponseMessageType.USER_INVALID)
 
 
 @api_view(['GET'])
 def get_product(request, pid):
+    print("pid:",pid)
     product_data = Product.objects.get(id=pid)
+    print("product_data",product_data)
     if (product_data is None):
         return api_model_response(ApiResponseMessageType.NO_PRODUCT_FOUND)
-
     return api_model_response(ApiResponseMessageType.PRODUCT_FOUND, product_data)
 
 
@@ -155,16 +165,20 @@ def add_product(request):
     username = data['username']
 
     if price <= 0:
-        return Response('PRODUCT_PRICE_IS_ZERO_OR_LESS')
+        return api_model_response(ApiResponseMessageType.PRODUCT_PRICE_IS_ZERO_OR_LESS)
+        #return Response('PRODUCT_PRICE_IS_ZERO_OR_LESS')
     if pname == "":
-        return Response('PRODUCT_NAME_IS_EMPTY')
+        return api_model_response(ApiResponseMessageType.PRODUCT_NAME_IS_EMPTY)
+        #return Response('PRODUCT_NAME_IS_EMPTY')
     if quantity <= 0:
-        return Response('PRODUCT_QUANTITY_IS_ZERO')
+        return api_model_response(ApiResponseMessageType.PRODUCT_QUANTITY_IS_ZERO)
+        #return Response('PRODUCT_QUANTITY_IS_ZERO')
 
     product_data = Product.objects.all()
     for product in product_data:
         if pname == product.name:
-            return Response('PRODUCT_ALREADY_EXIST')
+            #return Response('PRODUCT_ALREADY_EXIST')
+            return api_model_response(ApiResponseMessageType.PRODUCT_ALREADY_EXIST)
 
     user = User.objects.get(username=username)
     if (user is None):
@@ -179,7 +193,8 @@ def add_product(request):
         status=status,
         image=image
     )
-    return Response('PRODUCT_ADDED_SUCCESSFULLY')
+    #return Response('PRODUCT_ADDED_SUCCESSFULLY')
+    return api_model_response(ApiResponseMessageType.PRODUCT_ADDED_SUCCESSFULLY)
 
 
 @api_view(['GET'])
@@ -190,9 +205,11 @@ def edit_product(request, pid):
     status = data['status']
     quantity = data['quantity']
     if price <= 0:
-        return Response('PRODUCT_PRICE_INVALID')
+        return api_model_response(ApiResponseMessageType.PRODUCT_PRICE_INVALID)
+        #return Response('PRODUCT_PRICE_INVALID')
     elif pname == "":
-        return Response('PRODUCT_NAME_EMPTY')
+        return api_model_response(ApiResponseMessageType.PRODUCT_NAME_EMPTY)
+        #return Response('PRODUCT_NAME_EMPTY')
 
     product = Product.objects.get(id=pid)
     if (product is None):
@@ -203,7 +220,8 @@ def edit_product(request, pid):
     product.edited_date = date.today()
     product.status = status
     product.save()
-    return Response('PRODUCT_EDITED_SUCCESSFULLY')
+    return api_model_response(ApiResponseMessageType.PRODUCT_EDITED_SUCCESSFULLY)
+    #return Response('PRODUCT_EDITED_SUCCESSFULLY')
 
 
 @api_view(['POST'])
