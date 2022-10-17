@@ -1,6 +1,14 @@
-from enum import Enum
+import pandas as pd
 
+<<<<<<< HEAD
 #from itsdangerous import Serializer
+=======
+from enum import Enum
+import json
+from itsdangerous import Serializer
+>>>>>>> 223192f3133c5d792daa07f392e12f130a7b6f83
+
+from ml.models import SeasonalDemandClassifier
 
 from . models import *
 from .serializers import *
@@ -22,6 +30,9 @@ fs = FileSystemStorage(location='tmp/')
 know what kind of data its getting
 """
 
+# sesonal demand model
+ml_sd = SeasonalDemandClassifier()
+
 
 class ApiResponseMessageType(Enum):
     CORRECT_EMAIL_AND_PASSWORD = 1
@@ -37,6 +48,7 @@ class ApiResponseMessageType(Enum):
     USER_INVALID = 10
     USER_DELETED = 11
 
+<<<<<<< HEAD
     PRODUCT_FOUND = 12
     NO_PRODUCT_FOUND = 13
     PRODUCT_AVAILABLE_CATEGORIES = 14
@@ -48,6 +60,13 @@ class ApiResponseMessageType(Enum):
     PRODUCT_ALREADY_EXIST = 19
     PRODUCT_ADDED_SUCCESSFULLY = 20
     PRODUCT_PRICE_INVALID = 21
+=======
+    PRODUCT_FOUND = 11
+    NO_PRODUCT_FOUND = 12
+    PRODUCT_AVAILABLE_CATEGORIES = 13
+    ALL_PRODUCTS_FROM_USER = 14
+    PRODUCT_ADDED_SUCCESSFULLY = 20
+>>>>>>> 223192f3133c5d792daa07f392e12f130a7b6f83
 
     def to_string(self):
         return f'{self.name}'
@@ -62,7 +81,11 @@ def api_model_response(messagetype: ApiResponseMessageType, data: models.Model =
     return Response(response)
 
 
+<<<<<<< HEAD
 def api_data_response(messagetype: ApiResponseMessageType, serialized_data = None) -> Response:
+=======
+def api_data_response(messagetype: ApiResponseMessageType, serialized_data=None) -> Response:
+>>>>>>> 223192f3133c5d792daa07f392e12f130a7b6f83
     response = {
         'message': messagetype.to_string(),
         'data': serialized_data
@@ -193,8 +216,12 @@ def add_product(request):
         status=status,
         image=image
     )
+<<<<<<< HEAD
     #return Response('PRODUCT_ADDED_SUCCESSFULLY')
     return api_model_response(ApiResponseMessageType.PRODUCT_ADDED_SUCCESSFULLY)
+=======
+    return api_data_response(ApiResponseMessageType.PRODUCT_ADDED_SUCCESSFULLY)
+>>>>>>> 223192f3133c5d792daa07f392e12f130a7b6f83
 
 
 @api_view(['GET'])
@@ -250,3 +277,14 @@ def get_all_products_from_a_user(request):
     products = Product.objects.all().filter(userid=user)
     serializer = ProductSerializer(products, many=True)
     return api_data_response(ApiResponseMessageType.ALL_PRODUCTS_FROM_USER, serializer.data)
+
+
+@api_view(['POST'])
+def get_stock_recommendation(request):
+    category = request.data['category']
+    return Response(json.dumps(ml_sd.predict_today(category)))
+
+
+@api_view(['POST'])
+def get_stock_recommendation_for_entire_year(request):
+    return Response(json.dumps(ml_sd.predict_an_entire_year()))

@@ -20,3 +20,10 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Product, ProductAdmin)
+
+
+class CategoryStockHistoryAdmin(admin.ModelAdmin):
+    ordering = ['date']
+
+
+admin.site.register(CategoryStockHistory, CategoryStockHistoryAdmin)

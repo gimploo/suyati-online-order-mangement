@@ -4,6 +4,7 @@ from django.db import models
 from datetime import date
 import uuid
 from django.utils.html import mark_safe
+from pandas import DataFrame
 # Create your models here.
 
 
@@ -66,3 +67,19 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CategoryStockHistory(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date = models.DateField(unique=True)
+
+    # add more categories under here
+    clothing = models.IntegerField()
+    furniture = models.IntegerField()
+    electronic = models.IntegerField()
+
+    def dataframe():
+        return DataFrame.from_records(CategoryStockHistory.objects.all().values())
+
+    def __str__(self):
+        return str(self.date)
