@@ -33,4 +33,3 @@ class DynamicPricing(admin.ModelAdmin):
 
 
 admin.site.register(DynamicPricing, DynamicPricingAdmin)
-    ordering = ['date']
