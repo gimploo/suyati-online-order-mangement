@@ -1,7 +1,5 @@
-from api.models import CategoryStockHistory
+from api.models import DynamicPricing
 import csv
-import uuid
-import datetime
 
 def run():
     with open('dataset/price_optimize.csv') as file:
