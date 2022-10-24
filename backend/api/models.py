@@ -74,12 +74,35 @@ class CategoryStockHistory(models.Model):
     date = models.DateField(unique=True)
 
     # add more categories under here
-    clothing = models.IntegerField()
-    furniture = models.IntegerField()
-    electronic = models.IntegerField()
+    clothing = models.PositiveIntegerField()
+    furniture = models.PositiveIntegerField()
+    electronic = models.PositiveIntegerField()
 
     def dataframe():
         return DataFrame.from_records(CategoryStockHistory.objects.all().values())
+
+    def __str__(self):
+        return str(self.date)
+
+class DynamicPricing(models.Model):
+    # ProductSalePrice,PurchasePrice,Profit,date,weekday,weekend,Category,demand
+    productsaleprice = models.FloatField()
+    purchaseprice = models.FloatField()
+    profit = models.FloatField()
+    date = models.DateField()
+    weekday = models.PositiveIntegerField()
+    weekend = models.PositiveIntegerField()
+    category = models.PositiveIntegerField()
+    demand = models.PositiveIntegerField()
+    category_dict = {1: 'cloth', 2: 'furniture', 3: 'electronic'}
+
+    def get_category(self):
+        return category_dict[self.category]
+
+    def check_weekday(self):
+        if self.weekday:
+            return True
+        return False
 
     def __str__(self):
         return str(self.date)

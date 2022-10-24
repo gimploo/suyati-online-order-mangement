@@ -4,7 +4,7 @@ from enum import Enum
 import json
 from itsdangerous import Serializer
 
-from ml.models import SeasonalDemandClassifier
+from ml.models import SeasonalDemandClassifier, DynamicPricing
 
 from . models import *
 from .serializers import *
@@ -28,6 +28,9 @@ know what kind of data its getting
 
 # sesonal demand model
 ml_sd = SeasonalDemandClassifier()
+
+# dynamic pricing model
+ml_dp = DynamicPricing()
 
 
 class ApiResponseMessageType(Enum):
@@ -251,3 +254,10 @@ def get_stock_recommendation(request):
 @api_view(['POST'])
 def get_stock_recommendation_for_entire_year(request):
     return Response(json.dumps(ml_sd.predict_an_entire_year()))
+
+@api_view(['POST'])
+def get_dynamic_price(request):
+    category = request.data['category']
+    demand = request.data['demand']
+    date = request.data['date']
+    return Response(json.dumps(ml_dp.predict(category,demand,date)))

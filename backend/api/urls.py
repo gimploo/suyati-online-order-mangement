@@ -23,4 +23,6 @@ urlpatterns = [
          name='get_stock_recommendation'),
     path('api/product/category/stock/recommendation/allyear', views.get_stock_recommendation_for_entire_year,
          name='get_stock_recommendation_for_entire_year'),
+    path('api/product/category/dynamic_price', views.get_dynamic_price,
+         name='get_dynamic_price'),
 ]

@@ -70,3 +70,20 @@ class SeasonalDemandClassifier:
             })
 
         return output
+
+class DynamicPricing:
+            """
+            (AN0NIT):
+            more to add after the dataset is in working condition
+            """
+            def __init__(self):
+                self.category = category
+                self.demand = demand
+                self.date = date
+
+            def predict(self, price: float):
+                """
+                import the model and run the prediction here
+                prediction code here:
+                """
+                return -1.0

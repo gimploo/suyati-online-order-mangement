@@ -27,3 +27,10 @@ class CategoryStockHistoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(CategoryStockHistory, CategoryStockHistoryAdmin)
+
+class DynamicPricing(admin.ModelAdmin):
+    ordering = ['date']
+
+
+admin.site.register(DynamicPricing, DynamicPricingAdmin)
+    ordering = ['date']
