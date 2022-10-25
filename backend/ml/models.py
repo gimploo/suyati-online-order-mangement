@@ -55,7 +55,7 @@ class SeasonalDemandClassifier:
                               year) & (furniture['ds'].dt.day == 1)]
         erows = electronic.loc[(electronic['ds'].dt.year ==
                                 year) & (electronic['ds'].dt.day == 1)]
-        
+
         clist = crows.values.tolist()
         elist = erows.values.tolist()
         flist = frows.values.tolist()
@@ -71,54 +71,56 @@ class SeasonalDemandClassifier:
 
         return output
 
+
 class DynamicPricing:
-            """
-            (AN0NIT):
-            DP Model working fine, tested.
-            TODO: convert the demand data.
-            """
-            def __init__(self):
-                self.dp  = joblib.load(
-                    RESEARCH_PATH + 'dynamic_price.joblib')
-                self.categories = {"clothing": 0 , "electronics": 1, "furniture": 2}
+    """
+    (AN0NIT):
+    DP Model working fine, tested.
+    TODO: convert the demand data.
+    """
 
-            def check_weekday(self,date):
-                # format is DD-MM-YYYY
-                myDate = datetime.strptime(date, "%d-%m-%Y")
-                weekno = myDate.weekday()
-                if weekno < 5:
-                    weekday=1
-                    weekend=0
-                else:  
-                    weekday=0
-                    weekend=1
-                return weekday,weekend
+    def __init__(self):
+        self.dp = joblib.load(
+            RESEARCH_PATH + 'dynamic_price.joblib')
+        self.categories = {"clothing": 0, "electronic": 1, "furniture": 2}
 
-            def get_category(self,category):
-                return self.categories[category.lower()]
+    def check_weekday(self, date):
+        # format is DD-MM-YYYY
+        myDate = datetime.strptime(date, "%d-%m-%Y")
+        weekno = myDate.weekday()
+        if weekno < 5:
+            weekday = 1
+            weekend = 0
+        else:
+            weekday = 0
+            weekend = 1
+        return weekday, weekend
 
-            def predict(self, category, demand, date):
-                """
-                (AN0NIT):
-                category is the name of item {clothing, electronics, furniture} in this order.
-                demand ; get the demand from the seasonal demand , divide it by 100 before passing to the dp model.
-                date; get it in the form of DD-MM-YYYY
-                """
-                            
-                p = None
-                try:
-                    p = self.dp
-                except Exception as e:
-                    print("Invalid category", str(e))
-                    return None
+    def get_category(self, category):
+        return self.categories[category.lower()]
 
-                # get 0/1 value for weekday and weekend variable to be passed to the model
-                weekday,weekend = self.check_weekday(date)      
+    def predict(self, category, demand, date):
+        """
+        (AN0NIT):
+        category is the name of item {clothing, electronics, furniture} in this order.
+        demand ; get the demand from the seasonal demand , divide it by 100 before passing to the dp model.
+        date; get it in the form of DD-MM-YYYY
+        """
 
-                # category right now is a string, converting it to 0,1,2       
-                category = self.get_category(category)
+        p = None
+        try:
+            p = self.dp
+        except Exception as e:
+            print("Invalid category", str(e))
+            return None
 
-                # converting the result of predict from dataframe to list
-                result = p.predict([[category,demand,weekday,weekend]]).tolist()
-                dp_price = result[0]
-                return dp_price            
+        # get 0/1 value for weekday and weekend variable to be passed to the model
+        weekday, weekend = self.check_weekday(date)
+
+        # category right now is a string, converting it to 0,1,2
+        category = self.get_category(category)
+
+        # converting the result of predict from dataframe to list
+        result = p.predict([[category, demand, weekday, weekend]]).tolist()
+        dp_price = result[0]
+        return dp_price

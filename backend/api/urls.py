@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from . import views
-from django.conf.urls.static import static  
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -26,5 +26,7 @@ urlpatterns = [
          name='get_stock_recommendation'),
     path('api/product/category/stock/recommendation/allyear', views.get_stock_recommendation_for_entire_year,
          name='get_stock_recommendation_for_entire_year'),
+    path('api/product/price/recommendation', views.get_dynamic_price_for_product,
+         name='get_dynamic_price_for_product'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

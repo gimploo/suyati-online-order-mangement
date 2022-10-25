@@ -6,14 +6,28 @@ import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import "./newProduct.css";
 
+const todaysDate = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1; // Months start at 0!
+  let dd = today.getDate();
+
+  if (dd < 10) dd = '0' + dd;
+  if (mm < 10) mm = '0' + mm;
+
+  const formattedToday = dd + '-' + mm + '-' + yyyy;
+
+  return formattedToday
+}
+
 export default function NewProduct() {
 
   const { API_SERVER_URL, add_product, categories } = useContext(BackendContext)
-
   const [imageContent, setImageContent] = useState(null)
   const [sdStock, setSdStock] = useState(null)
+  const [dpPrice, setDpPrice] = useState(0)
   const [userSelectedStock, setUserSelectedStock] = useState(0)
-
+  const tdate = todaysDate()
 
   const ml_SeasonalDemand = async (category) => {
     await axios.post(`${API_SERVER_URL}/product/category/stock/recommendation`, { category: category })
@@ -22,6 +36,21 @@ export default function NewProduct() {
           const data = JSON.parse(res.data)
           setSdStock(data)
           setUserSelectedStock(data.avg)
+        }
+      })
+  }
+
+  const ml_DynamicPrice = async (demand) => {
+    await axios.post(`${API_SERVER_URL}/product/price/recommendation`,
+      {
+        category: demand.category,
+        demand: demand.avg,
+        date: tdate
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          console.log(res.data)
+          setDpPrice(res.data)
         }
       })
   }
@@ -52,6 +81,10 @@ export default function NewProduct() {
     ml_SeasonalDemand("electronic")
   }, [categories])
 
+  useEffect(() => {
+    ml_DynamicPrice(sdStock)
+  }, [sdStock])
+
   return (
     <div className="newProduct border-2 p-8 m-auto w-1/2 ">
       <h1 className="addProductTitle">New Product</h1>
@@ -81,7 +114,7 @@ export default function NewProduct() {
             <h1 class='m-2 text-lg font-semibold text-gray-600 p-2 text-center'>{userSelectedStock}</h1>
           </div>
           <div className="addProductItem bg-yellow-300 p-2 rounded-md">
-            <label >Recommended (seasonal demand)</label>
+            <label class='text-center'>Recommended (seasonal demand)</label>
             <div class='flex space-x-4'>
               <label >{sdStock?.min}</label>
               <input name='quantity' class='font-semibold' onChange={sliderOnChange} type="range" min={sdStock?.min} max={sdStock?.max} value={userSelectedStock} />
@@ -90,10 +123,15 @@ export default function NewProduct() {
           </div>
 
         </div>
+        <div class='flex'>
+          <div className="addProductItem">
+            <label>Price</label>
+            <h1 class='m-2 text-lg font-semibold text-gray-600 p-2 text-center'>{dpPrice}</h1>
+          </div>
+          <div className="addProductItem bg-yellow-300 p-2 rounded-md">
+            <label class='text-center'>Recommended (dynamic price)</label>
+          </div>
 
-        <div className="addProductItem">
-          <label>Price</label>
-          <input name='price' type="number" placeholder="10.00" />
         </div>
 
         <div className="addProductItem">

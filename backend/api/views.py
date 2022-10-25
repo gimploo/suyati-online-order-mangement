@@ -28,6 +28,9 @@ know what kind of data its getting
 # sesonal demand model
 ml_sd = SeasonalDemandClassifier()
 
+# dynamic pricing model
+ml_dp = DynamicPricing()
+
 
 class ApiResponseMessageType(Enum):
     CORRECT_EMAIL_AND_PASSWORD = 1
@@ -253,3 +256,12 @@ def get_stock_recommendation(request):
 @api_view(['POST'])
 def get_stock_recommendation_for_entire_year(request):
     return Response(json.dumps(ml_sd.predict_an_entire_year()))
+
+
+@api_view(['POST'])
+def get_dynamic_price_for_product(request):
+    print(request.data)
+    demand = int(request.data['demand']) / 100
+    date = request.data['date']
+    category = request.data['category'].lower()
+    return Response(ml_dp.predict(category, demand, date))
