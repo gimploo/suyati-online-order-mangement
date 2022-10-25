@@ -2,9 +2,7 @@ import pandas as pd
 
 from enum import Enum
 import json
-from itsdangerous import Serializer
-
-from ml.models import SeasonalDemandClassifier, DynamicPricing
+from ml.models import SeasonalDemandClassifier
 
 from . models import *
 from .serializers import *
@@ -29,9 +27,6 @@ know what kind of data its getting
 # sesonal demand model
 ml_sd = SeasonalDemandClassifier()
 
-# dynamic pricing model
-ml_dp = DynamicPricing()
-
 
 class ApiResponseMessageType(Enum):
     CORRECT_EMAIL_AND_PASSWORD = 1
@@ -51,6 +46,7 @@ class ApiResponseMessageType(Enum):
     PRODUCT_AVAILABLE_CATEGORIES = 13
     ALL_PRODUCTS_FROM_USER = 14
     PRODUCT_ADDED_SUCCESSFULLY = 20
+    PRODUCT_DELETED_SUCCESSFULLY = 21
 
     def to_string(self):
         return f'{self.name}'
@@ -67,8 +63,8 @@ def api_model_response(messagetype: ApiResponseMessageType, data: models.Model =
 
 def api_data_response(messagetype: ApiResponseMessageType, serialized_data=None) -> Response:
     response = {
-        'message': messagetype.to_string(),
-        'data': serialized_data
+        'message':  messagetype.to_string(),
+        'data':     serialized_data if serialized_data is not None else {}
     }
     print(response)
     return Response(response)
@@ -156,7 +152,6 @@ def get_product(request, pid):
 @api_view(['POST'])
 def add_product(request):
     data = request.data
-    print(data)
     pname = data['name']
     price = int(data['price'])
     category = data['category']
@@ -218,12 +213,16 @@ def edit_product(request, pid):
 
 
 @api_view(['POST'])
-def delete_product(request, pid):
-    product = Product.objects.get(id=id)
+def delete_product(request):
+    print(request.data)
+    username    = request.data['username']
+    pname       = request.data['productname']
+    user        = User.objects.get(username=username)
+    product     = Product.objects.get(userid=user, name=pname)
     if (product is None):
         return api_model_response(ApiResponseMessageType.NO_PRODUCT_FOUND)
     product.delete()
-    return Response(f'product {pid} deleted successfully')
+    return api_data_response(ApiResponseMessageType.PRODUCT_DELETED_SUCCESSFULLY)
 
 
 @api_view(['POST'])
@@ -255,9 +254,3 @@ def get_stock_recommendation(request):
 def get_stock_recommendation_for_entire_year(request):
     return Response(json.dumps(ml_sd.predict_an_entire_year()))
 
-@api_view(['POST'])
-def get_dynamic_price(request):
-    category = request.data['category']
-    demand = request.data['demand']
-    date = request.data['date']
-    return Response(json.dumps(ml_dp.predict(category,demand,date)))

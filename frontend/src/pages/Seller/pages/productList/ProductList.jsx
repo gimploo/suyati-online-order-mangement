@@ -14,13 +14,14 @@ export default function SellerProductList() {
   const [products, setProducts] = useState([])
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const user = localStorage.getItem(COOKIE_USER_INFO)
-    const data = JSON.parse(user)
-    console.log(data)
+  const user = localStorage.getItem(COOKIE_USER_INFO)
+  const userdata = JSON.parse(user)
+  console.log(user)
+  console.log(userdata)
 
+  const loadData = async () => {
     let tmp = []
-    axios.post(`${API_SERVER_URL}/user/product/all/`, { username: data.username })
+    await axios.post(`${API_SERVER_URL}/user/product/all/`, { username: userdata.username })
       .then((res) => {
         if (res.status == 200) {
           setProducts(res.data)
@@ -40,14 +41,24 @@ export default function SellerProductList() {
           setData(tmp)
         }
       })
+  }
 
-
-
+  useEffect(() => {
+    loadData()
   }, [])
 
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  const handleDelete = async (name) => {
+
+    axios.post(`${API_SERVER_URL}/product/delete/`, 
+      { username : userdata.username, productname: name })
+    .then ((res) => {
+      if (res.status = 200) 
+        loadData()
+      else 
+        alert("handle delete error")
+
+    })
   };
 
   const columns = [
@@ -88,7 +99,7 @@ export default function SellerProductList() {
             </Link>
             <DeleteOutline
               className="productListDelete"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row.name)}
             />
           </>
         );

@@ -7,6 +7,8 @@ from django.utils.html import mark_safe
 from pandas import DataFrame
 # Create your models here.
 
+def upload_to(instance, filename):
+    return 'images/{filename}'.format(filename=filename)
 
 class User(models.Model):
     """
@@ -55,7 +57,7 @@ class Product(models.Model):
     status = models.IntegerField(
         choices=PRODUCT_STATUS, null=False, default=PRODUCT_STATUS[1])
     quantity = models.PositiveBigIntegerField(default=1)
-    image = models.ImageField(upload_to='images/', blank=True, null=True)
+    image = models.ImageField(upload_to=upload_to, blank=True, null=True)
     added_date = models.DateField(default=date.today)
     edited_date = models.DateField(default=date.today)
 
@@ -80,29 +82,6 @@ class CategoryStockHistory(models.Model):
 
     def dataframe():
         return DataFrame.from_records(CategoryStockHistory.objects.all().values())
-
-    def __str__(self):
-        return str(self.date)
-
-class DynamicPricing(models.Model):
-    # ProductSalePrice,PurchasePrice,Profit,date,weekday,weekend,Category,demand
-    productsaleprice = models.FloatField()
-    purchaseprice = models.FloatField()
-    profit = models.FloatField()
-    date = models.DateField()
-    weekday = models.PositiveIntegerField()
-    weekend = models.PositiveIntegerField()
-    category = models.PositiveIntegerField()
-    demand = models.PositiveIntegerField()
-    category_dict = {1: 'cloth', 2: 'furniture', 3: 'electronic'}
-
-    def get_category(self):
-        return category_dict[self.category]
-
-    def check_weekday(self):
-        if self.weekday:
-            return True
-        return False
 
     def __str__(self):
         return str(self.date)

@@ -1,5 +1,8 @@
 from django.urls import path
+from django.conf import settings
 from . import views
+from django.conf.urls.static import static  
+
 
 urlpatterns = [
 
@@ -14,7 +17,7 @@ urlpatterns = [
     path('api/product/:pid', views.get_product, name='get_product'),
     path('api/product/add/', views.add_product, name='add_product'),
     path('api/product/edit/:pid', views.edit_product, name='edit_product'),
-    path('api/product/delete/:pid', views.delete_product, name='delete_product'),
+    path('api/product/delete/', views.delete_product, name='delete_product'),
     path('api/product/category/all/', views.get_available_categories,
          name='get_available_categories'),
 
@@ -23,6 +26,5 @@ urlpatterns = [
          name='get_stock_recommendation'),
     path('api/product/category/stock/recommendation/allyear', views.get_stock_recommendation_for_entire_year,
          name='get_stock_recommendation_for_entire_year'),
-    path('api/product/category/dynamic_price', views.get_dynamic_price,
-         name='get_dynamic_price'),
-]
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

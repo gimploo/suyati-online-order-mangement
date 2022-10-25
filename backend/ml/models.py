@@ -25,7 +25,7 @@ class SeasonalDemandClassifier:
             print("Invalid category", str(e))
             return None
 
-        future = p.make_future_dataframe(1, freq='MS')
+        future = p.make_future_dataframe(15, freq='MS')
         forecast = p.predict(
             future)[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
         return forecast
@@ -34,7 +34,7 @@ class SeasonalDemandClassifier:
         forecast = self.predict(category)
         month = datetime.now().month
         year = datetime.now().year
-        row = forecast.loc[forecast['ds'] == f"{year}-01-{month}"]
+        row = forecast.loc[forecast['ds'] == f"{year}-{month}-01"]
         return {
             "date": f"01-{month}-{year}",
             "category": category,
@@ -50,12 +50,12 @@ class SeasonalDemandClassifier:
 
         year = datetime.now().year
         crows = clothing.loc[(clothing['ds'].dt.year ==
-                             year) & (clothing['ds'].dt.month == 1)]
+                             year) & (clothing['ds'].dt.day == 1)]
         frows = furniture.loc[(furniture['ds'].dt.year ==
-                              year) & (furniture['ds'].dt.month == 1)]
+                              year) & (furniture['ds'].dt.day == 1)]
         erows = electronic.loc[(electronic['ds'].dt.year ==
-                                year) & (electronic['ds'].dt.month == 1)]
-
+                                year) & (electronic['ds'].dt.day == 1)]
+        
         clist = crows.values.tolist()
         elist = erows.values.tolist()
         flist = frows.values.tolist()
@@ -70,20 +70,3 @@ class SeasonalDemandClassifier:
             })
 
         return output
-
-class DynamicPricing:
-            """
-            (AN0NIT):
-            more to add after the dataset is in working condition
-            """
-            def __init__(self):
-                self.category = category
-                self.demand = demand
-                self.date = date
-
-            def predict(self, price: float):
-                """
-                import the model and run the prediction here
-                prediction code here:
-                """
-                return -1.0

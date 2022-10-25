@@ -65,6 +65,16 @@ export default function NewProduct() {
           <label>Name</label>
           <input name='name' type="text" placeholder="Product name" />
         </div>
+        <div className="addProductItem">
+          <label>Category</label>
+          <select onChange={stockOnChange} name='category'>
+            {
+              categories.map((category, index) => (
+                <option value={`${index + 1}`}> {category[1]}</option>
+              ))
+            }
+          </select>
+        </div>
         <div class='flex'>
           <div className="addProductItem">
             <label>Stock</label>
@@ -79,16 +89,6 @@ export default function NewProduct() {
             </div>
           </div>
 
-        </div>
-        <div className="addProductItem">
-          <label>Category</label>
-          <select onChange={stockOnChange} name='category'>
-            {
-              categories.map((category, index) => (
-                <option value={`${index + 1}`}> {category[1]}</option>
-              ))
-            }
-          </select>
         </div>
 
         <div className="addProductItem">
