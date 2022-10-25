@@ -34,7 +34,7 @@ class SeasonalDemandClassifier:
         forecast = self.predict(category)
         month = datetime.now().month
         year = datetime.now().year
-        row = forecast.loc[forecast['ds'] == f"{year}-01-{month}"]
+        row = forecast.loc[forecast['ds'] == f"{year}-{month}-01"]
         return {
             "date": f"01-{month}-{year}",
             "category": category,
@@ -50,12 +50,12 @@ class SeasonalDemandClassifier:
 
         year = datetime.now().year
         crows = clothing.loc[(clothing['ds'].dt.year ==
-                             year) & (clothing['ds'].dt.month == 1)]
+                             year) & (clothing['ds'].dt.day == 1)]
         frows = furniture.loc[(furniture['ds'].dt.year ==
-                              year) & (furniture['ds'].dt.month == 1)]
+                              year) & (furniture['ds'].dt.day == 1)]
         erows = electronic.loc[(electronic['ds'].dt.year ==
-                                year) & (electronic['ds'].dt.month == 1)]
-
+                                year) & (electronic['ds'].dt.day == 1)]
+        
         clist = crows.values.tolist()
         elist = erows.values.tolist()
         flist = frows.values.tolist()

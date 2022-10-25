@@ -37,21 +37,21 @@ export default function Sidebar() {
                 Analytics
               </li>
             </Link>
-            <li className="sidebarListItem">
+            {/* <li className="sidebarListItem">
               <TrendingUp className="sidebarIcon" />
               Sales
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quick Menu</h3>
           <ul className="sidebarList">
-            <Link to="/seller/users" className="link">
+            {/* <Link to="/seller/users" className="link">
               <li className="sidebarListItem">
                 <PermIdentity className="sidebarIcon" />
                 Users
               </li>
-            </Link>
+            </Link> */}
             <Link to="/seller/products" className="link">
               <li className="sidebarListItem">
                 <Storefront className="sidebarIcon" />

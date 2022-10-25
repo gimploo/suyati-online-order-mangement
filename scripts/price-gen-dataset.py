@@ -77,8 +77,8 @@ def main():
     NDAYS           = len(DATES)
     CATEGORYS       = [1,2,3]
     PROFITS         = random_values_from_range(-5.0, 7.0, 7, NDAYS)
-    PURCHASE_PRICE  = random_values_from_range(5.0, 9.8, 1, NDAYS)
-    PRODUCT_SALE    = random_values_from_range(0, 150, 1, NDAYS)
+    PURCHASE_PRICE  = random_values_from_range(6.0, 9.8, 1, NDAYS)
+    PRODUCT_SALE    = random_values_from_range(0, 70, 1, NDAYS)
     DEMANDS         = demands_for_years()
 
     HEADER = ["SI", "ProductSale", "PurchasePrice", "Profit", "date", "weekday",
