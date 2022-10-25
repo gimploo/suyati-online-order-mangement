@@ -215,11 +215,10 @@ def edit_product(request, pid):
 
 @api_view(['POST'])
 def delete_product(request):
-    print(request.data)
-    username    = request.data['username']
-    pname       = request.data['productname']
-    user        = User.objects.get(username=username)
-    product     = Product.objects.get(userid=user, name=pname)
+    username = request.data['username']
+    pname = request.data['productname']
+    user = User.objects.get(username=username)
+    product = Product.objects.get(userid=user, name=pname)
     if (product is None):
         return api_model_response(ApiResponseMessageType.NO_PRODUCT_FOUND)
     product.delete()
@@ -254,4 +253,3 @@ def get_stock_recommendation(request):
 @api_view(['POST'])
 def get_stock_recommendation_for_entire_year(request):
     return Response(json.dumps(ml_sd.predict_an_entire_year()))
-
