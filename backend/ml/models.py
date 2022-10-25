@@ -1,3 +1,4 @@
+from unittest import result
 import joblib
 import pandas as pd
 from datetime import datetime
@@ -7,7 +8,6 @@ RESEARCH_PATH = 'ml/research/'
 
 
 class SeasonalDemandClassifier:
-
     def __init__(self):
         self.prophet = dict()
         self.prophet['CLOTHING'] = joblib.load(
@@ -25,7 +25,7 @@ class SeasonalDemandClassifier:
             print("Invalid category", str(e))
             return None
 
-        future = p.make_future_dataframe(1, freq='MS')
+        future = p.make_future_dataframe(15, freq='MS')
         forecast = p.predict(
             future)[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
         return forecast
@@ -74,16 +74,51 @@ class SeasonalDemandClassifier:
 class DynamicPricing:
             """
             (AN0NIT):
-            more to add after the dataset is in working condition
+            DP Model working fine, tested.
+            TODO: convert the demand data.
             """
             def __init__(self):
-                self.category = category
-                self.demand = demand
-                self.date = date
+                self.dp  = joblib.load(
+                    RESEARCH_PATH + 'dynamic_price.joblib')
+                self.categories = {"clothing": 0 , "electronics": 1, "furniture": 2}
 
-            def predict(self, price: float):
+            def check_weekday(self,date):
+                # format is DD-MM-YYYY
+                myDate = datetime.strptime(date, "%d-%m-%Y")
+                weekno = myDate.weekday()
+                if weekno < 5:
+                    weekday=1
+                    weekend=0
+                else:  
+                    weekday=0
+                    weekend=1
+                return weekday,weekend
+
+            def get_category(self,category):
+                return self.categories[category.lower()]
+
+            def predict(self, category, demand, date):
                 """
-                import the model and run the prediction here
-                prediction code here:
+                (AN0NIT):
+                category is the name of item {clothing, electronics, furniture} in this order.
+                demand ; get the demand from the seasonal demand , divide it by 100 before passing to the dp model.
+                date; get it in the form of DD-MM-YYYY
                 """
-                return -1.0
+                            
+                p = None
+                try:
+                    p = self.dp
+                except Exception as e:
+                    print("Invalid category", str(e))
+                    return None
+
+                # get 0/1 value for weekday and weekend variable to be passed to the model
+                weekday,weekend = self.check_weekday(date)      
+
+                # category right now is a string, converting it to 0,1,2       
+                category = self.get_category(category)
+
+                # converting the result of predict from dataframe to list
+                result = p.predict([[category,demand,weekday,weekend]]).tolist()
+                dp_price = result[0]
+                return dp_price            

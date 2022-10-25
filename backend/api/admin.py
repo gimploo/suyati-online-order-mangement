@@ -28,7 +28,7 @@ class CategoryStockHistoryAdmin(admin.ModelAdmin):
 
 admin.site.register(CategoryStockHistory, CategoryStockHistoryAdmin)
 
-class DynamicPricing(admin.ModelAdmin):
+class DynamicPricingAdmin(admin.ModelAdmin):
     ordering = ['date']
 
 

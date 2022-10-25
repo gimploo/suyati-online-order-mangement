@@ -2,7 +2,6 @@ import pandas as pd
 
 from enum import Enum
 import json
-from itsdangerous import Serializer
 
 from ml.models import SeasonalDemandClassifier, DynamicPricing
 
