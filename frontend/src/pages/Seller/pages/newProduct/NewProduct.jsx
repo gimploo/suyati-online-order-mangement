@@ -49,7 +49,6 @@ export default function NewProduct() {
       })
       .then((res) => {
         if (res.status == 200) {
-          console.log(res.data)
           setDpPrice(res.data)
         }
       })
@@ -70,7 +69,8 @@ export default function NewProduct() {
 
     e.preventDefault();
     const name = e.target.name.value;
-    const price = e.target.price.value;
+    // const price = e.target.price.value;
+    const price = dpPrice;
     const category = e.target.category.value;
     const quantity = e.target.quantity.value;
     const status = e.target.status.value;
