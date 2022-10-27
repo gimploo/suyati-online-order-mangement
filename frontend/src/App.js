@@ -21,6 +21,7 @@ import ProductPage from 'pages/ProductPage'
 import NewProduct from 'pages/Seller/pages/newProduct/NewProduct'
 import { BackendProvider } from 'context/BackendContext'
 import PopUp from 'components/Popup'
+import AboutPage from 'pages/About'
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path='/product' element={<ProductPage />} />
+					<Route path='/about' element={<AboutPage />} />
 
 					<Route path="/buyer/cart" element={<BuyerCart />} />
 					<Route path="/buyer/user" element={<BuyerUser />} />
