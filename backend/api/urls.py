@@ -6,6 +6,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
+    path('upload/', views.image_upload_view),
+
     # User apis
     path('api/login/', views.login, name='login'),
     path('api/signup/', views.signup, name='signup'),

@@ -1,5 +1,3 @@
-from email.policy import default
-from unittest.util import _MAX_LENGTH
 from django.db import models
 from datetime import date
 import uuid
@@ -7,8 +5,18 @@ from django.utils.html import mark_safe
 from pandas import DataFrame
 # Create your models here.
 
+
 def upload_to(instance, filename):
     return 'images/{filename}'.format(filename=filename)
+
+
+class Image(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images')
+
+    def __str__(self):
+        return self.title
+
 
 class User(models.Model):
     """
@@ -57,7 +65,8 @@ class Product(models.Model):
     status = models.IntegerField(
         choices=PRODUCT_STATUS, null=False, default=PRODUCT_STATUS[1])
     quantity = models.PositiveBigIntegerField(default=1)
-    image = models.ImageField(upload_to=upload_to, blank=True, null=True)
+    image = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
+    # image = models.ImageField(upload_to=upload_to, blank=True, null=True)
     added_date = models.DateField(default=date.today)
     edited_date = models.DateField(default=date.today)
 
