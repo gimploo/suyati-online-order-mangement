@@ -8,7 +8,8 @@ import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 import PopUp from 'components/Popup';
 
 const BackendContext = createContext({});
-const SERVER_URL = 'http://127.0.0.1:8000/'
+// const SERVER_URL = 'http://127.0.0.1:8000/'
+const SERVER_URL = 'http://ec2-34-209-215-94.us-west-2.compute.amazonaws.com:8000'
 const API_SERVER_URL = `${SERVER_URL}/api`
 const DEFAULT_USER_INFO = {
     id: '',
